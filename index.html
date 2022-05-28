@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Earned Value calculator</title>
+
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" 
+    integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" 
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+<body>
+    <header>
+        <span class="title">Metric Calculator</span>
+    </header>
+    <div class="container">
+        <div class="menu_list">
+            <div class="menu_list-item">Earned value </div>
+        </div>
+        <div class="content">
+            <div class="calculate">
+                <div class="content-input">
+                    
+                    <div class="content-input_item">
+                        <input id="ac" class="input-form" type="number" placeholder="Enter AC(ACWP)...">
+                        <div class="input-icon_note note-ac">
+                            <i class="fa-solid fa-circle-exclamation"></i>
+                        </div>
+                    </div>
+                    <div class="content-input_item">
+                        <input id="ev" class="input-form" type="number" placeholder="Enter EV(BCWP)...">
+                        <div class="input-icon_note note-ev">
+                            <i class="fa-solid fa-circle-exclamation"></i>
+                        </div>
+                    </div>
+                    <div class="content-input_item">
+                        <input id="pv" class="input-form" type="number" placeholder="Enter PV(BCWS)...">
+                        <div class="input-icon_note note-pv">
+                            <i class="fa-solid fa-circle-exclamation"></i>
+                        </div>
+                    </div>
+                    <div class="content-input_item">
+                        <input id="bac" class="input-form" type="number" placeholder="Enter BAC...">
+                        <div class="input-icon_note note-bac">
+                            <i class="fa-solid fa-circle-exclamation"></i>
+                        </div>
+                    </div>
+                    <div class="content-input_item bd-tp pd-tp">
+                        <input class="input-file" type="file" id="input-file">
+                    </div>
+                    <div class="content-input_item">
+                        <button id="calculate" class="caculate-button">Calculate</button>
+                    </div>
+                </div>
+                <div class="content-output_number">
+                    <div class="result">
+                        <!-- <div class="result-item">
+                            <div class="result-item-number">
+                                <div class="result-item-title">CV:</div>
+                                <div class="result-item-output">232000000</div>
+                            </div>
+                            <div class="result-item-comment">you sadf adsfa dsfaf afdafa adsfadf dsafadf adfasdf adsfafaf ádff</div>
+                        </div> -->
+                    </div>
+                </div>
+            </div>
+            <div class="chart">
+                <div class="content-output_chart"></div>
+            </div>
+        </div>
+    </div>
+    <script src="main.js"></script>
+</body>
+</html>
