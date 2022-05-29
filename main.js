@@ -318,11 +318,11 @@ function file_cal () {
 
 function delete_minus () {
     inputs.forEach((input) => {
-        input.onkeyup = (e) => {
+        input.addEventListener('keyup', (e) => {
             if (e.code == 'Minus' || e.code == 'Period') {
                 input.parentElement.reset();
             }
-        }
+        })
     })
 }
 
