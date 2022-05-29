@@ -347,7 +347,7 @@ function file_cal () {
                       label: {
                         connectorAllowed: false
                       },
-                      pointStart: 1
+                      pointStart: 0
                     }
                 },
 
