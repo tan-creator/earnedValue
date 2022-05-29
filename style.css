@@ -92,7 +92,7 @@ header {
 
 .menu_list {
 	display: block;
-	width: 20%;
+	width: 15%;
     height: 90vh;
     border-right: 1px solid #333;
 	position: fixed;
@@ -110,7 +110,7 @@ header {
 	display: flex;
 	flex-direction: row;
 	height: 90vh;
-	width: 80%;
+	width: 85%;
 }
 
 .calculate {
@@ -142,7 +142,10 @@ header {
 
 .input-form {
 	width: 90%;
-	font-size: 16px;
+    font-size: 16px;
+    border: 1px solid #323262;
+    padding: 2px;
+    border-radius: 4px;
 }
 
 .input-icon_note {
@@ -151,7 +154,25 @@ header {
 	color: #6200ee;
 }
 
+.input-file {
+	width: 100%;
+    line-height: 24px;
+    border: 1px solid #323262;
+    border-radius: 4px;
+    font-size: 14px;
+    user-select: none;
+    padding: 2px;
+	cursor: pointer;
+}
+
+.input-file::-webkit-file-upload-button {
+	visibility: hidden;
+    padding: 0;
+    width: 0;
+}
+
 .caculate-button {
+	display: block;
 	position: absolute;
 	right: 0;
 	font-size: 16px;
@@ -196,7 +217,7 @@ header {
 	flex-direction: row;
 	padding-right: 4px;
 	border-right: 2px solid rgb(0, 13, 255);
-	width: 52%;
+	width: 46%;
 }
 
 .result-item-title {
@@ -207,7 +228,7 @@ header {
 }
 
 .result-item-comment {
-	width: 48%;
+	width: 54%;
 	margin-left: 2px;
 }
 

@@ -3,6 +3,7 @@ const $$ = document.querySelectorAll.bind(document);
 
 const calculate = $('#calculate');
 const result = $('.result');
+const readFile = $('#input-file');
 //----------------------------------------- Handle data -----------------------------------------
 function formatNumber(num) {
     if(num >= 0) {
@@ -10,20 +11,16 @@ function formatNumber(num) {
             return `${(num/1000000000).toFixed(2)} billion $`;
         } else if (num / 1000000 >= 1) {
             return `${(num/1000000).toFixed(2)} million $`
-        } else if (num / 1000 >= 1) {
-            return `${(num/1000).toFixed(2)} thousand $`
         } else {
-            return num;
+            return `${num}$`;
         }
     }else if(num < 0) {
         if (((num * -1) / 1000000000) >= 1) {
             return `-${((num * -1) / 1000000000).toFixed(2)} billion $`;
         } else if ((num * -1) / 1000000 >= 1) {
             return `-${((num * -1) / 1000000).toFixed(2)} million $`
-        } else if ((num * -1) / 1000 >= 1) {
-            return `-${((num * -1) / 1000).toFixed(2)} thousand $`
         } else {
-            return num;
+            return `${num}$`;
         }
     }
 }
@@ -215,9 +212,27 @@ function _vac(vac) {
         return resultItem;
     }
 }
+
+function renderData (cv, cpi, sv, spi, eac, etc, vac) {
+    const resultItems = [];
+
+    resultItems.push(cv, cpi, sv, spi, eac, etc, vac);
+
+    const htmls = resultItems.map((item) => {
+        return `
+            <div class="result-item">
+            <div class="result-item-number">
+                <div class="result-item-title">${item.name}</div>
+                <div class="result-item-output ${item.color}">${item.value}</div>
+            </div>
+            <div class="result-item-comment">${item.comment}</div>
+            </div>
+        `
+    })
+
+    result.innerHTML = htmls.join(" ");
+}
 //----------------------------------------- Handle Event -----------------------------------------
-
-
 
 function ev_cal () {
     calculate.onclick = () => {
@@ -225,45 +240,83 @@ function ev_cal () {
         const ev = $('#ev').value;
         const pv = $('#pv').value;
         const bac = $('#bac').value;
-        
-        const cv = ev - ac;
-        const cpi = ev/ac;
-        const sv = ev - pv;
-        const spi = ev/pv;
-        const eac = bac/cpi;
-        const etc = eac - ac;
-        const vac = bac - eac;
 
-        const resultItems = [];
-
-        resultItems.push(_cv(cv));
-        resultItems.push(_cpi(cpi));
-        resultItems.push(_sv(sv));
-        resultItems.push(_spi(spi));
-        resultItems.push(_eac(eac, bac));
-        resultItems.push(_etc(etc));
-        resultItems.push(_vac(vac));
-
-        //render result
-        const htmls = resultItems.map((item) => {
-            return `
-                <div class="result-item">
-                <div class="result-item-number">
-                    <div class="result-item-title">${item.name}</div>
-                    <div class="result-item-output ${item.color}">${item.value}</div>
-                </div>
-                <div class="result-item-comment">${item.comment}</div>
-                </div>
-            `
-        })
-
-        result.innerHTML = htmls.join(" ");
+        renderData(_cv(ev - ac), _cpi(ev/ac), _sv(ev - pv), _spi(ev/pv), _eac(bac/(ev/ac), bac), _etc((bac/(ev/ac)) - ac), _vac(bac - (bac/(ev/ac))));
     }
 }
 
+function file_cal () {
+    readFile.addEventListener('change', () => {
+        const acs = [0];
+        const evs = [0];
+        const bacs = [0];
+        let dem = 0;
+        let time = '';
+
+        var ac;
+        var ev;
+        var pv;
+        var bac; 
+
+        readXlsxFile(readFile.files[0]).then((rows) => {
+            rows.forEach(elements => {
+                elements.forEach((element, index) => {
+                    if (typeof element === 'string') {
+                        if (element == 'AC' || element == 'ac' || element == 'Ac' || element == 'aC') {
+                            let y = 0;
+                            for (let i = index + 1; i < elements.length; i++) {
+                                if (elements[i] === null) {
+                                    break;
+                                }
+                                acs.push(acs[y] + elements[i])
+                                y++;
+                                
+                            }
+                        } else if (element == 'EV' || element == 'ev' || element == 'Ev' || element == 'eV') {
+                            let y = 0;
+                            for (let i = index + 1; i < elements.length; i++) {
+                                if (elements[i] === null) {
+                                    break;
+                                }
+                                evs.push(evs[y] + elements[i])
+                                y++;
+                            }
+                        } else if (element == 'BAC' || element == 'bac' || element == 'Bac' || element == 'BAc' || element == 'bAC' || element == 'baC') {
+                            let y = 0;
+                            for (let i = index + 1; i < elements.length; i++) {
+                                if (elements[i] === null) {
+                                    break;
+                                }
+                                bacs.push(bacs[y] + elements[i])
+                                y++;
+                            }
+                        } else {
+                            time = element;
+                            for (let i = index + 1; i < elements.length; i++) {
+                                if (elements[i] === null) {
+                                    break;
+                                }
+                                dem++;
+                            }
+                        }
+                    }
+
+                })
+            });
+
+            ac = acs[acs.length - 1];
+            ev = evs[evs.length - 1];
+            pv = bacs[evs.length - 1];
+            bac = bacs[bacs.length - 1];
+            console.log(`${ac} / ${ev} / ${pv} / ${bac}`);
+            renderData(_cv(ev - ac), _cpi(ev/ac), _sv(ev - pv), _spi(ev/pv), _eac(bac/(ev/ac), bac), _etc((bac/(ev/ac)) - ac), _vac(bac - (bac/(ev/ac))));
+        })
+    })
+}
 //----------------------------------------- Run -----------------------------------------
 function start () {
     ev_cal();
+    file_cal();
 }
 
 start();
