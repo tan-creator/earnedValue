@@ -6,6 +6,8 @@ const result = $('.result');
 const readFile = $('#input-file');
 const inputs = $$('.input-form');
 const clearF = $$('.clearForm');
+
+
 //----------------------------------------- Handle data -----------------------------------------
 
 function formatNumber(num) {
@@ -312,6 +314,73 @@ function file_cal () {
             bac = bacs[bacs.length - 1];
             
             renderData(_cv(ev - ac), _cpi(ev/ac), _sv(ev - pv), _spi(ev/pv), _eac(bac/(ev/ac), bac), _etc((bac/(ev/ac)) - ac), _vac(bac - (bac/(ev/ac))));
+
+            Highcharts.chart('chart', {
+                title: {
+                    text: 'EVM chart'
+                },
+
+                subtitle: {
+                    text: ''
+                },
+
+                yAxis: {
+                    title: {
+                      text: 'Cost'
+                    }
+                },
+
+                xAxis: {
+                    title: {
+                      text: time
+                    }
+                },
+
+                legend: {
+                    layout: 'vertical',
+                    align: 'right',
+                    verticalAlign: 'middle'
+                },
+
+                plotOptions: {
+                    series: {
+                      label: {
+                        connectorAllowed: false
+                      },
+                      pointStart: 1
+                    }
+                },
+
+                series: [
+                    {
+                        name: 'AC',
+                        data: acs,
+                    },
+                    {
+                        name: 'EV',
+                        data: evs,
+                    },
+                    {
+                        name: 'BAC',
+                        data: bacs,
+                    },
+                ],
+
+                responsive: {
+                    rules: [{
+                      condition: {
+                        maxWidth: 500
+                      },
+                      chartOptions: {
+                        legend: {
+                          layout: 'horizontal',
+                          align: 'center',
+                          verticalAlign: 'bottom'
+                        }
+                      }
+                    }]
+                }
+            })
         })
     })
 }
@@ -325,6 +394,7 @@ function delete_minus () {
         })
     })
 }
+
 
 //----------------------------------------- Run -----------------------------------------
 function start () {
