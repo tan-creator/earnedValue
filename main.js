@@ -219,6 +219,7 @@ function _vac(vac) {
 }
 
 function renderData (cv, cpi, sv, spi, eac, etc, vac) {
+    result.innerHTML = "";
     const resultItems = [];
 
     resultItems.push(cv, cpi, sv, spi, eac, etc, vac);
@@ -244,13 +245,14 @@ function ev_cal () {
         const ev = $('#ev').value;
         const pv = $('#pv').value;
         const bac = $('#bac').value;
-
+        readFile.value = '';
         renderData(_cv(ev - ac), _cpi(ev/ac), _sv(ev - pv), _spi(ev/pv), _eac(bac/(ev/ac), bac), _etc((bac/(ev/ac)) - ac), _vac(bac - (bac/(ev/ac))));
     }
 }
 
 function file_cal () {
     readFile.addEventListener('change', () => {
+        result.innerHTML = "";
         const acs = [0];
         const evs = [0];
         const bacs = [0];
