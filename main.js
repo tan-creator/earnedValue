@@ -4,7 +4,10 @@ const $$ = document.querySelectorAll.bind(document);
 const calculate = $('#calculate');
 const result = $('.result');
 const readFile = $('#input-file');
+const inputs = $$('.input-form');
+const clearF = $$('.clearForm');
 //----------------------------------------- Handle data -----------------------------------------
+
 function formatNumber(num) {
     if(num >= 0) {
         if (num / 1000000000 >= 1) {
@@ -29,15 +32,15 @@ function _cv(cv) {
     if (cv < 0) {
         const resultItem = {
             name : 'CV :',
-            value : formatNumber(cv),
+            value : formatNumber(cv.toFixed(2)),
             color : 'bad-color',
-            comment : `${formatNumber(cv)} over budget.`,
+            comment : `${formatNumber(cv.toFixed(2))} over budget.`,
         }
         return resultItem;
     }else if (cv == 0) {
         const resultItem = {
             name : 'CV :',
-            value : formatNumber(cv),
+            value : formatNumber(cv.toFixed(2)),
             color : 'good-color',
             comment : `Equal budget.`,
         }
@@ -45,9 +48,9 @@ function _cv(cv) {
     }else {
         const resultItem = {
             name : 'CV :',
-            value : formatNumber(cv),
+            value : formatNumber(cv.toFixed(2)),
             color : 'good-color',
-            comment : `${formatNumber(cv)} under budget.`,
+            comment : `${formatNumber(cv.toFixed(2))} under budget.`,
         }
         return resultItem;
     }
@@ -140,7 +143,7 @@ function _spi(spi) {
 function _eac(eac,bac) {
     if (eac > bac) {
         const resultItem = {
-            name : 'EAC :',
+            name : 'EAC:',
             value : formatNumber(eac.toFixed(2)),
             color : 'bad-color',
             comment : `We currently estimate that the total project will cost ${formatNumber(eac.toFixed(2))}$.`,
@@ -148,7 +151,7 @@ function _eac(eac,bac) {
         return resultItem;
     }else if (eac == bac) {
         const resultItem = {
-            name : 'EAC :',
+            name : 'EAC:',
             value : formatNumber(eac.toFixed(2)),
             color : 'good-color',
             comment : `We currently estimate that the total project will cost ${formatNumber(eac.toFixed(2))}$.`,
@@ -156,7 +159,7 @@ function _eac(eac,bac) {
         return resultItem;
     }else {
         const resultItem = {
-            name : 'EAC :',
+            name : 'EAC:',
             value : formatNumber(eac.toFixed(2)),
             color : 'good-color',
             comment : `We currently estimate that the total project will cost ${formatNumber(eac.toFixed(2))}$.`,
@@ -168,7 +171,7 @@ function _eac(eac,bac) {
 function _etc(etc) {
     if (etc > 0) {
         const resultItem = {
-            name : 'ETC :',
+            name : 'ETC:',
             value : formatNumber(etc.toFixed(2)),
             color : 'bad-color',
             comment : `We need to spend ${formatNumber(etc.toFixed(2))}$ to finish the project.`,
@@ -176,7 +179,7 @@ function _etc(etc) {
         return resultItem;
     }else if (etc <= 0) {
         const resultItem = {
-            name : 'ETC :',
+            name : 'ETC:',
             value : formatNumber(etc.toFixed(2)),
             color : 'good-color',
             comment : `We need to spend 0$ to finish the project.`,
@@ -188,7 +191,7 @@ function _etc(etc) {
 function _vac(vac) {
     if (vac < 0) {
         const resultItem = {
-            name : 'VAC :',
+            name : 'VAC:',
             value : formatNumber(vac.toFixed(2)),
             color : 'bad-color',
             comment : `We currently expect to be ${formatNumber(vac.toFixed(2))} over budget when the project is completed.`,
@@ -196,7 +199,7 @@ function _vac(vac) {
         return resultItem;
     }else if (vac == 0) {
         const resultItem = {
-            name : 'VAC :',
+            name : 'VAC:',
             value : formatNumber(vac.toFixed(2)),
             color : 'good-color',
             comment : `We currently expect to be $0 under budget when the project is completed.`,
@@ -204,7 +207,7 @@ function _vac(vac) {
         return resultItem;
     }else {
         const resultItem = {
-            name : 'VAC :',
+            name : 'VAC:',
             value : formatNumber(vac.toFixed(2)),
             color : 'good-color',
             comment : `We currently expect to be ${formatNumber(vac.toFixed(2))} under budget when the project is completed.`,
@@ -233,7 +236,6 @@ function renderData (cv, cpi, sv, spi, eac, etc, vac) {
     result.innerHTML = htmls.join(" ");
 }
 //----------------------------------------- Handle Event -----------------------------------------
-
 function ev_cal () {
     calculate.onclick = () => {
         const ac = $('#ac').value;
@@ -308,13 +310,25 @@ function file_cal () {
             ev = evs[evs.length - 1];
             pv = bacs[evs.length - 1];
             bac = bacs[bacs.length - 1];
-            console.log(`${ac} / ${ev} / ${pv} / ${bac}`);
+            
             renderData(_cv(ev - ac), _cpi(ev/ac), _sv(ev - pv), _spi(ev/pv), _eac(bac/(ev/ac), bac), _etc((bac/(ev/ac)) - ac), _vac(bac - (bac/(ev/ac))));
         })
     })
 }
+
+function delete_minus () {
+    inputs.forEach((input) => {
+        input.onkeyup = (e) => {
+            if (e.code == 'Minus') {
+                input.parentElement.reset();
+            }
+        }
+    })
+}
+
 //----------------------------------------- Run -----------------------------------------
 function start () {
+    delete_minus();
     ev_cal();
     file_cal();
 }
