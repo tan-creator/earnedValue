@@ -253,6 +253,11 @@ function ev_cal () {
 function file_cal () {
     readFile.addEventListener('change', () => {
         result.innerHTML = "";
+        $('#ac').value = "";
+        $('#ev').value = "";
+        $('#pv').value = "";
+        $('#bac').value = "";
+        
         const acs = [0];
         const evs = [0];
         const bacs = [0];
