@@ -269,6 +269,8 @@ function file_cal () {
         var pv;
         var bac; 
 
+        var check = true;
+
         readXlsxFile(readFile.files[0]).then((rows) => {
             rows.forEach(elements => {
                 elements.forEach((element, index) => {
@@ -278,6 +280,11 @@ function file_cal () {
                             for (let i = index + 1; i < elements.length; i++) {
                                 if (elements[i] === null) {
                                     break;
+                                }
+                                if (elements[i] < 0) {
+                                    alert("Có giá trị âm, mời nhập lại!");
+                                    check = false;
+                                    _clear();
                                 }
                                 acs.push(acs[y] + elements[i])
                                 y++;
@@ -289,6 +296,11 @@ function file_cal () {
                                 if (elements[i] === null) {
                                     break;
                                 }
+                                if (elements[i] < 0) {
+                                    alert("Có giá trị âm, mời nhập lại!");
+                                    check = false;
+                                    _clear();
+                                }
                                 evs.push(evs[y] + elements[i])
                                 y++;
                             }
@@ -298,6 +310,11 @@ function file_cal () {
                                 if (elements[i] === null) {
                                     break;
                                 }
+                                if (elements[i] < 0) {
+                                    alert("Có giá trị âm, mời nhập lại!");
+                                    check = false;
+                                    _clear();
+                                }
                                 bacs.push(bacs[y] + elements[i])
                                 y++;
                             }
@@ -306,6 +323,11 @@ function file_cal () {
                             for (let i = index + 1; i < elements.length; i++) {
                                 if (elements[i] === null) {
                                     break;
+                                }
+                                if (elements[i] < 0) {
+                                    alert("Có giá trị âm, mời nhập lại!");
+                                    check = false;
+                                    _clear();
                                 }
                                 dem++;
                             }
@@ -322,72 +344,74 @@ function file_cal () {
             
             renderData(_cv(ev - ac), _cpi(ev/ac), _sv(ev - pv), _spi(ev/pv), _eac(bac/(ev/ac), bac), _etc((bac/(ev/ac)) - ac), _vac(bac - (bac/(ev/ac))));
 
-            Highcharts.chart('chart', {
-                title: {
-                    text: 'EVM chart'
-                },
-
-                subtitle: {
-                    text: ''
-                },
-
-                yAxis: {
+            if (check == true) {
+                Highcharts.chart('chart', {
                     title: {
-                      text: 'Cost'
-                    }
-                },
-
-                xAxis: {
-                    title: {
-                      text: time
-                    }
-                },
-
-                legend: {
-                    layout: 'vertical',
-                    align: 'right',
-                    verticalAlign: 'middle'
-                },
-
-                plotOptions: {
-                    series: {
-                      label: {
-                        connectorAllowed: false
-                      },
-                      pointStart: 0
-                    }
-                },
-
-                series: [
-                    {
-                        name: 'AC',
-                        data: acs,
+                        text: 'EVM chart'
                     },
-                    {
-                        name: 'EV',
-                        data: evs,
+    
+                    subtitle: {
+                        text: ''
                     },
-                    {
-                        name: 'BAC',
-                        data: bacs,
-                    },
-                ],
-
-                responsive: {
-                    rules: [{
-                      condition: {
-                        maxWidth: 500
-                      },
-                      chartOptions: {
-                        legend: {
-                          layout: 'horizontal',
-                          align: 'center',
-                          verticalAlign: 'bottom'
+    
+                    yAxis: {
+                        title: {
+                          text: 'Cost'
                         }
-                      }
-                    }]
-                }
-            })
+                    },
+    
+                    xAxis: {
+                        title: {
+                          text: time
+                        }
+                    },
+    
+                    legend: {
+                        layout: 'vertical',
+                        align: 'right',
+                        verticalAlign: 'middle'
+                    },
+    
+                    plotOptions: {
+                        series: {
+                          label: {
+                            connectorAllowed: false
+                          },
+                          pointStart: 0
+                        }
+                    },
+    
+                    series: [
+                        {
+                            name: 'AC',
+                            data: acs,
+                        },
+                        {
+                            name: 'EV',
+                            data: evs,
+                        },
+                        {
+                            name: 'BAC',
+                            data: bacs,
+                        },
+                    ],
+    
+                    responsive: {
+                        rules: [{
+                          condition: {
+                            maxWidth: 500
+                          },
+                          chartOptions: {
+                            legend: {
+                              layout: 'horizontal',
+                              align: 'center',
+                              verticalAlign: 'bottom'
+                            }
+                          }
+                        }]
+                    }
+                })
+            }
         })
     })
 }
@@ -402,6 +426,11 @@ function delete_minus () {
     })
 }
 
+function _clear() {
+    const htmls = ""
+    readFile.value = "";
+    result.innerHTML = htmls.join(" ");
+}
 
 //----------------------------------------- Run -----------------------------------------
 function start () {
